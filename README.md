@@ -6,7 +6,7 @@
 
 | 文件 | 用途 |
 |------|------|
-| `agents/researcher.md` | **Researcher** — 信息搜集与调研子代理（纯手动调用） |
+| `agents/researcher.md` | **Researcher** — 信息搜集与调研子代理（支持自动委托） |
 | `agents/reviewer.md` | **Reviewer** — 代码审查子代理（支持 200 行自动触发） |
 | `instructions/delegation.md` | 委托策略指令（合并到 AGENTS.md） |
 
@@ -62,27 +62,29 @@ opencode
 
 ## 🧠 使用方式
 
-### Reviewer — 自动触发 + 手动调用
+### 手动调用
 
 ```bash
-# 自动触发：代码写完/改完超过 200 行时自动审查
-# 手动调用：
+@researcher 对比一下 React 和 Vue 的架构差异
 @reviewer 审查一下 src/auth.ts
 ```
 
-### Researcher — 仅手动调用
+### 自动委托
 
-> 信息搜集类任务由 opencode 内置的 Explore（代码库探索）和 Scout（外部资料调研）自动处理。
-> Researcher 仅在**需要特定研究方法论**时手动使用。
+主 agent 根据 AGENTS.md 中的策略自动判断：
 
-```bash
-@researcher 用第一性原理分析一下这个模块的设计
-```
+| 场景 | 行为 |
+|------|------|
+| 需要 10 条以上搜索的调研 | → researcher |
+| 明显不确定、一波搜索不够 | → researcher |
+| 简单问答（<10 条搜索） | → 主 agent 自己处理 |
+| 代码修改超 200 行 | → reviewer |
+| 用户说"用researcher查一下" | → researcher |
 
-### Researcher 与内置子代理的差异
+### Researcher 与内置子代理（Explore / Scout）的差异
 
-| | Explore / Scout（内置） | Researcher（手动） |
-|--|------------------------|-------------------|
+| | 内置 | Researcher |
+|--|------|------------|
 | 搜索 | 搜到信息即可 | 多重假设 + 反例搜索 |
 | 结论 | 直接回答 | 必须验证 + 标确信度 |
 | 分析 | 默认单解释 | 至少 2-3 种解释 |
@@ -100,7 +102,7 @@ opencode
 ~/.config/opencode/
 ├── AGENTS.md              # 含委托策略（已合并）
 ├── agents/
-│   ├── researcher.md      # 信息搜集（手动调用）
+│   ├── researcher.md      # 信息搜集（自动+手动）
 │   └── reviewer.md        # 代码审查（自动+手动）
 └── opencode.jsonc         # 无需修改
 ```
