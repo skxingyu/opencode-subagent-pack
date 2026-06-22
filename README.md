@@ -1,6 +1,7 @@
-# opencode-subagent-pack
+# opencode-subagent轻量化子agent
 
 一组开箱即用的 OpenCode 子代理（Subagent），包含自动委托策略。
+超级轻量，只有两个(一个审查，一个搜集信息)
 
 ## 📦 包含内容
 
@@ -10,7 +11,7 @@
 | `agents/reviewer.md` | **Reviewer** — 代码审查子代理 |
 | `instructions/delegation.md` | 委托策略指令（合并到 AGENTS.md） |
 
-## 🚀 安装步骤
+## 🚀 安装步骤(让agent看，它会帮你装好的)
 
 ### 1. 放置子代理文件
 
